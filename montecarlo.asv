@@ -56,9 +56,9 @@ for n = 1:nSim
     vy = vy .* tempHigher
     vy = vy .* tempLower
     
-    tempx1 = x > 200
-    tempx2 = x < 0
-    
+    tempx1 = x < 200
+    x = x *. tempx1
+ 
     
     
     

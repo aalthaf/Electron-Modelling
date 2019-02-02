@@ -36,8 +36,9 @@ vy = vth * sin(r2)
 for n = 1:nSim
     xc = x % x copy
     yc = y % y copy
-   
     
+    
+    %Reflecting for y bounds%
     temp = y >= ybound 
     temp1 = y < ybound 
     
@@ -56,19 +57,32 @@ for n = 1:nSim
     vy = vy .* tempHigher
     vy = vy .* tempLower
     
-    tempx1 = x > 200
-    tempx2 = x < 0
+    %%%%%%%%%%%%%%%%%%%
+    
+    % when x > 200%%%%%
+    tempx1 = x <= 200
+    
+    x = x .* tempx1
+    %%%%%%%%%%%%%%%%%%
+    
+    %%When x goes less than zero , come from 200 %%%%%
+    
+    tempx2 = x < -0.1
     
     
+    tempx2 = tempx2 * 200
+    tempxFinal = x + tempx2
     
+    x = tempxFinal
     
+    %%%%%%%%%%%%%%%%%%%
     dx = vx * (1/100000)
     dy = vy * (1/100000)
     
     x = x + dx;
     y = y + dy;
     
-    plot(x(),y,'.r');
+    plot(x,y,'.r');
     axis([0 200 0 100])
     pause(0.2)
     hold on
