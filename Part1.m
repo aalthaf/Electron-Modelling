@@ -26,7 +26,7 @@ C.g = 9.80665; %metres (32.1740 ft) per s²
 
 
 nSim = 10000;
-noe = 1000;
+noe = 20;
 r2 = randi(360,noe,1);
 xbound = 200
 ybound = 100
@@ -37,6 +37,8 @@ vx = vth * cos(r2)
 vy = vth * sin(r2)
 
 MFP = vth * 0.2 * 10^-12
+
+colourArray = rand(noe,1)
 
 
 for n = 1:nSim
@@ -82,8 +84,8 @@ for n = 1:nSim
     x = tempxFinal
     
     %%%%%%%%%%%%%%%%%%%
-    dx = vx * (1/100000)
-    dy = vy * (1/100000)
+    dx = vx * (1/200000)
+    dy = vy * (1/200000)
     
     x = x + dx;
     y = y + dy;
@@ -92,12 +94,15 @@ for n = 1:nSim
     
     semiCTemperature = (average *(0.26)* C.m_0)/(C.kb)
         
-    plot(x,y,'.r');
+   
+    scatter(x,y,3,colourArray)
     axis([0 200 0 100])
-    title (semiCTemperature)
-    pause(0.2)
-    
     hold on
+    
+    
+    pause(0.01)
+    
+    %hold on
    
 end
 

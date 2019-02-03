@@ -26,7 +26,7 @@ C.g = 9.80665; %metres (32.1740 ft) per s²
 
 
 nSim = 10000;
-noe = 1000;
+noe = 20;
 r2 = randi(360,noe,1);
 xbound = 200
 ybound = 100
@@ -36,40 +36,10 @@ vth = sqrt((C.kb * 300)/(C.m_0 * 0.26))
 vx = vth * cos(r2) 
 vy = vth * sin(r2)
 
-
-
 MFP = vth * 0.2 * 10^-12
-
-figure(1)
-hist(vx,100)
-title("Velocity in x direction")
-
-figure(2)
-hist(vy,100)
-title ("Velocity in y direction")
-
-pScat = 1 - exp((-5 * 10^-14)/(0.2 * 10^-12))
-%PscatArray = pScat * ones(noe,1)
-
 
 
 for n = 1:nSim
-    
-    %Modelling scattering%%%%%%
-    rScatter= rand(noe,1)
-    
-    % this gives 1s and 0s. 1 means it scatters 
-    tempScatter = rScatter > pScat
-    
-    %not scattered
-    notScatter = rScatter < pScat
-    %%%%%%%%%%%%%%%%%%%%%%%%%
-    vx = vx .* notScatter % the scattered vx are now 0
-    
-    
-    
-    
-    %%%%%%%%%%%%%%
     xc = x % x copy
     yc = y % y copy
     
@@ -121,15 +91,15 @@ for n = 1:nSim
     average = mean(vsq)
     
     semiCTemperature = (average *(0.26)* C.m_0)/(C.kb)
-    figure(3)
-    plot(x,y,'.r');
+        
+    scatter(xc, x, yc, y);
+    line(xc,y)
     axis([0 200 0 100])
-    title ("The semiconductor temperature is " + semiCTemperature)
+    title (semiCTemperature)
     pause(0.2)
     
     hold on
    
 end
-
 
 

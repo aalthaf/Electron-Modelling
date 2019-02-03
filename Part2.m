@@ -26,7 +26,7 @@ C.g = 9.80665; %metres (32.1740 ft) per s²
 
 
 nSim = 10000;
-noe = 10;
+noe = 50;
 r2 = randi(360,noe,1);
 xbound = 200
 ybound = 100
@@ -36,7 +36,7 @@ vth = sqrt((C.kb * 300)/(C.m_0 * 0.26))
 vx = vth * cos(r2) 
 vy = vth * sin(r2)
 
-
+colourArray= rand(noe,1)
 
 MFP = vth * 0.2 * 10^-12
 
@@ -132,21 +132,28 @@ for t = 1:nSim
     x = tempxFinal
     
     %%%%%%%%%%%%%%%%%%%
-    dx = vx * (1/100000)
-    dy = vy * (1/100000)
+    dx = vx * (1/200000)
+    dy = vy * (1/200000)
     
     x = x + dx;
     y = y + dy;
     vsq = (vy).^2 + (vx).^2 
     average = mean(vsq)
     
+    figure (3)
     semiCTemperature = (average *(0.26)* C.m_0)/(C.kb)
-    figure(3)
-    plot(x,y,'.r');
+    plot(t , semiCTemperature,'.r')
+    axis([0 1000 0 500])
+    hold on
+    
+    
+    figure(4)
+    scatter(x,y,3,colourArray)
     axis([0 200 0 100])
     title ("The semiconductor temperature is " + semiCTemperature)
-    pause(0.1)
+  
     
+    pause(0.1)
     hold on
    
 end
