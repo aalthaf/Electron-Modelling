@@ -26,7 +26,7 @@ C.g = 9.80665; %metres (32.1740 ft) per s²
 
 
 nSim = 10000;
-noe = 50;
+noe = 20;
 r2 = randi(360,noe,1);
  
 
@@ -37,12 +37,40 @@ r2 = randi(360,noe,1);
 
 xbound = 200
 ybound = 100
-x = randi(200,noe,1);
-y = randi(100,noe,1);
+x =  randi(200,noe,1);
+y =  randi(100,noe,1);
 vth = sqrt((C.kb * 300)/(C.m_0 * 0.26))
 vx = vth * cos(r2) 
 vy = vth * sin(r2)
 
+% 
+% %these will have x > 1.2 and x < 0.8 as 1s
+% tempsxupper = x >1.2
+% tempxlower = x < 0.8
+% 
+% tempxupper0
+% tempxlower0 = 
+
+
+for pos = 1: noe
+    xpos = x(pos);
+    if (xpos < 120 && xpos > 80)
+        if (y(pos) < 40)
+            xpos = xpos + 50;
+            x(pos) = xpos
+        
+       
+        elseif(y(pos) > 60)
+            xpos = xpos -50
+            x(pos) = xpos
+        
+        else
+        
+        end
+      
+       
+    end
+end
 
 
 MFP = vth * 0.2 * 10^-12
@@ -55,8 +83,12 @@ figure(2)
 hist(vy,100)
 title ("Velocity in y direction")
 
-pScat = 1 - exp((-35 * 10^-16)/(0.2 * 10^-12))
+pScat = 1 - exp((-3 * 10^-16)/(0.2 * 10^-12))
 %PscatArray = pScat * ones(noe,1)
+
+
+
+
 
 
 
@@ -133,16 +165,64 @@ for t = 1:nSim
     %%When x goes less than zero , come from 200 %%%%%
     
     tempx2 = x < -0.1
-    
+    s
     
     tempx2 = tempx2 * 200
     tempxFinal = x + tempx2
     
     x = tempxFinal
     
+    %%%%Dealing with the lower rectangle%%%%%%
+    tLR1s = ( x > 80 & x < 120) & y < 40
+    tLR0s = tLR1s == 0
+    tLR1s = -1 * tLR1s
+    
+    f = tLR1s + tLR0s
+    
+    vx = vx .* f
+    
+    
+    tLR1s = ( x > 80 & x < 120) & (y < 41 & y >= 40)
+    tLR0s = tLR1s == 0
+    tLR1s = -1 * tLR1s
+    
+    f = tLR1s + tLR0s
+    
+    vy = vy .* f
+    
+    %tempFinalLower = x .* y
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    %%%%%%%%%%Dealing with the upper rectangle%%%%%%%
+    tUR1s = ( x > 80 & x < 120) & y > 60
+    tUR0s = tUR1s == 0
+    tUR1s = -1 * tUR1s
+    
+    f = tUR1s + tUR0s
+    
+    vx = vx .* f
+    
+    
+    tUR1s = ( x > 80 & x < 120) & (y >59 & y < 60)
+    tUR0s = tUR1s == 0
+    tUR1s = -1 * tUR1s
+    
+    f = tUR1s + tUR0s
+    
+    vy = vy .* f
+    
+    
+    
+    
+    %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    
+    
+    
+    
     %%%%%%%%%%%%%%%%%%%
-    dx = vx * (1/100000)
-    dy = vy * (1/100000)
+    dx = vx * (1/200000)
+    dy = vy * (1/200000)
     
     x = x + dx;
     y = y + dy;
@@ -157,9 +237,10 @@ for t = 1:nSim
     rectangle('Position',[80 60 40 40])
     
     title ("The semiconductor temperature is " + semiCTemperature)
-    pause(0.1)
+    pause(0.001)
     figure (3)
     hold on
+    
 end
 
 
