@@ -26,7 +26,7 @@ C.g = 9.80665; %metres (32.1740 ft) per s²
 
 
 nSim = 10000;
-noe = 1000;
+noe = 10;
 r2 = randi(360,noe,1);
 xbound = 200
 ybound = 100
@@ -36,10 +36,60 @@ vth = sqrt((C.kb * 300)/(C.m_0 * 0.26))
 vx = vth * cos(r2) 
 vy = vth * sin(r2)
 
+
+
 MFP = vth * 0.2 * 10^-12
 
+figure(1)
+hist(vx,100)
+title("Velocity in x direction")
 
-for n = 1:nSim
+figure(2)
+hist(vy,100)
+title ("Velocity in y direction")
+
+pScat = 1 - exp((-35 * 10^-16)/(0.2 * 10^-12))
+%PscatArray = pScat * ones(noe,1)
+
+
+
+for t = 1:nSim
+    vxc = vx % create copy of vx
+    vyc = vy % create copy of vy
+    [n,m] = size(vx)
+    [n1,m1] = size(vy)
+    
+    %%% randomly permutation of positions in vx and vy%%%%%
+    idx = randperm(n)
+    randomvx = vx
+    randomvx(idx,1)= vx (:,1) 
+    
+    idy = randperm(n1)
+    randomvy = vy
+    randomvy(idy,1) = vy(:,1)
+    
+    
+    %Modelling scattering%%%%%%
+    rScatter= rand(noe,1)
+    
+    % this gives 1s and 0s. 1 means it scatters 
+    tempScatter = rScatter < pScat
+    randomvx = tempScatter .* randomvx % not scattered are 0s
+    randomvy = tempScatter .* randomvy  % not scattered are 0s
+    
+    %not scattered
+    notScatter = rScatter >= pScat
+    %%%%%%%%%%%%%%%%%%%%%%%%%
+    
+    vx = vx .* notScatter % the scattered vx are now 0
+    vy = vy .* notScatter % scattered vy = 0
+    
+    vx = vx + randomvx
+    vy = vy + randomvy
+    
+    
+    
+    %%%%%%%%%%%%%%
     xc = x % x copy
     yc = y % y copy
     
@@ -91,14 +141,15 @@ for n = 1:nSim
     average = mean(vsq)
     
     semiCTemperature = (average *(0.26)* C.m_0)/(C.kb)
-        
+    figure(3)
     plot(x,y,'.r');
     axis([0 200 0 100])
-    title (semiCTemperature)
-    pause(0.2)
+    title ("The semiconductor temperature is " + semiCTemperature)
+    pause(0.1)
     
     hold on
    
 end
+
 
 
