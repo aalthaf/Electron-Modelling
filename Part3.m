@@ -1,13 +1,7 @@
-% Name :Althaf Ahamed Sadique
-% Student Number: 100971479s
-% Assignment 1
-% Part 1
-% 
-% 
-% 
-% 
-% 
-% Mean free path is vth * mean time = 0.2 ps * vth
+%% Enhancements
+% In this part , two rectangular boundaries are added. These boundaires do
+% not allow electrons to go through and they are reflected depending on
+% where they are coming from.
 clear
 
 global C
@@ -32,7 +26,7 @@ r2 = randi(360,noe,1);
 
 
 
-colourArray = rand(noe,1)
+colourArray = rand(noe,1);
 
 
 xbound = 200;
@@ -95,17 +89,17 @@ tMatrix = zeros(noe);
 for t = 1:nSim
     
     
-    vxc = vx % create copy of vx
-    vyc = vy % create copy of vy
+    vxc = vx; % create copy of vx
+    vyc = vy; % create copy of vy
     [n,m] = size(vx);
     [n1,m1] = size(vy);
     
-    %%% randomly permutation of positions in vx and vy%%%%%
+    %%randomly permutation of positions in vx and vy%%%%%
     idx = randperm(n);
     randomvx = vx;
     randomvx(idx,1)= vx (:,1) ;
     
-    idy = randperm(n1)
+    idy = randperm(n1);
     randomvy = vy;
     randomvy(idy,1) = vy(:,1);
     
@@ -113,7 +107,7 @@ for t = 1:nSim
     %Modelling scattering%%%%%%
     rScatter= rand(noe,1);
     
-    % this gives 1s and 0s. 1 means it scatters 
+    %this gives 1s and 0s. 1 means it scatters 
     tempScatter = rScatter < pScat;
     randomvx = tempScatter .* randomvx; % not scattered are 0s
     randomvy = tempScatter .* randomvy;  % not scattered are 0s
@@ -230,47 +224,50 @@ for t = 1:nSim
     Z = f1(X,Y);
     figure (10);
     mesh(X,Y,Z);
-    title('Temperature plot')
-    xlabel('x positions')
-    ylabel('y positions')
-    zlabel('temperature')
+    title('Temperature plot');
+    xlabel('X Position');
+    ylabel('Y Position');
+    zlabel('Temparature(K)');
     %axis tight;hold on
     %plot3(x,y,tMatrix,'.','MarkerSize',15)
    
-    figure (3)
+    figure (3);
     semiCTemperature = (average *(0.26)* C.m_0)/(C.kb);
-    plot(t , semiCTemperature,'.r')
-    xlabel('time')
-    ylabel('temperature(K)')
+    plot(t , semiCTemperature,'.r');
+    title('Temperature plot')
+    xlabel('time');
+    ylabel('temperature(K)');
     axis([0 300 200 400]);
-    hold on
+    hold on;
     
-    figure(4)
+    figure(4);
     
-    scatter (x, y , 3 ,colourArray)
+    scatter (x, y , 3 ,colourArray);
     axis([0 200 0 100]);
     rectangle('Position',[80 0 40 40]);
     rectangle('Position',[80 60 40 40]);
-    hold on
+    xlabel("x");
+    ylabel("y");
+    hold on;
    
-    title ("The semiconductor temperature is " + semiCTemperature)
+    title ("The semiconductor temperature is " + semiCTemperature);
     %pause(0.001)
-    figure (3)
-    hold on
+    figure (3);
+    hold on;
 end
 
 %define the value of r over a 2D grid:
-scatter(x,y,'r.');
-hold on
+scatter(x,y,'r.'); 
+hold on;
 %[n,c]= hist3([x,y])
 %contour(c{1},c{2},n)
 
 Elecpos = [x,y];
 D = hist3(Elecpos(:,1:2),'Nbins',[20,10]);
-figure (6)
-surf(D)
-title('Electron Density plot')
-shading interp
+figure (6);
+surf(D);
+title('Electron Density plot');
+shading interp;
 
 
 
